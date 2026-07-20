@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm sorry, Meru</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* ── root ── */
+        :root {
+            --storm-dark: #2b2f4a;
+            --storm-light: #4c5677;
+            --mauve: #8b7ba6;
+            --coral: #e8a190;
+            --gold: #ffd7a0;
+            --cream: #fff8f1;
+            --ink: #33303a;
+            --rose: #d45b7a;
+            --sage: #8fb996;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* ── particles ── */
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            top: -10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+            animation: drift linear infinite;
+        }
+        @keyframes drift {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) translateX(15px);
+                opacity: 0;
+            }
+        }
+
+        /* ── sections ── */
+        section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 1.5rem;
+            z-index: 2;
+        }
+
+        .hero {
+            background: linear-gradient(180deg, var(--storm-dark), var(--storm-light));
+            color: var(--cream);
+        }
+        .letter-section {
+            background: linear-gradient(180deg, var(--storm-light), var(--mauve));
+            color: var(--cream);
+        }
+        .bloom-section {
+            background: linear-gradient(180deg, var(--mauve), var(--coral));
+            color: var(--ink);
+        }
+        .video-section {
+            background: linear-gradient(180deg, var(--coral), #dcb5a8);
+            color: var(--ink);
+            min-height: auto;
+            padding: 4rem 1.5rem;
+        }
+        .forgiveness-section {
+            background: linear-gradient(180deg, #dcb5a8, var(--gold));
+            color: var(--ink);
+        }
+        .closing {
+            background: linear-gradient(180deg, var(--gold), #f5e6c8);
+            color: var(--ink);
+        }
+
+        /* ── hero ── */
+        .eyebrow {
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            opacity: 0.75;
+            margin-bottom: 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            margin-bottom: 1.5rem;
+        }
+        .hero-line {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            opacity: 0.9;
+            max-width: 30ch;
+        }
+        .scroll-cue {
+            position: absolute;
+            bottom: 2.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+            animation: bob 2.2s ease-in-out infinite;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: inherit;
+            font-family: inherit;
+        }
+        @keyframes bob {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        /* ── reveals ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── letter card ── */
+        .letter-card {
+            background: var(--cream);
+            color: var(--ink);
+            max-width: 620px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+            border-radius: 18px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            text-align: left;
+        }
+        .letter-card p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            margin-bottom: 1.2rem;
+        }
+        .letter-card p:last-of-type {
+            margin-bottom: 0;
+        }
+        .letter-card .signature {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            margin-top: 1.5rem;
+            color: var(--storm-light);
+        }
+
+        /* ── lists ── */
+        .list-grid {
+            max-width: 540px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin: 1.2rem 0 1.8rem;
+            text-align: left;
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.95rem;
+            color: var(--ink);
+            transition: background 0.2s;
+        }
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.45);
+        }
+        .list-item .icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .list-item .label {
+            font-weight: 500;
+        }
+
+        .section-sub {
+            font-size: 1.05rem;
+            opacity: 0.85;
+            max-width: 32ch;
+            margin-bottom: 0.5rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0.5rem auto 1.2rem;
+            border-radius: 999px;
+        }
+
+        /* ── bloom ── */
+        .bloom-section h2 {
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            margin-bottom: 2rem;
+            max-width: 20ch;
+        }
+        .flower-stage {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 1.5rem;
+        }
+
+        .petal-g {
+            transform-box: fill-box;
+            transform-origin: 50% 100%;
+            transition: transform 0.9s cubic-bezier(.34, 1.56, .64, 1);
+        }
+        .petal-g.p0 {
+            transform: rotate(0deg) scale(0);
+        }
+        .petal-g.p1 {
+            transform: rotate(60deg) scale(0);
+        }
+        .petal-g.p2 {
+            transform: rotate(120deg) scale(0);
+        }
+        .petal-g.p3 {
+            transform: rotate(180deg) scale(0);
+        }
+        .petal-g.p4 {
+            transform: rotate(240deg) scale(0);
+        }
+        .petal-g.p5 {
+            transform: rotate(300deg) scale(0);
+        }
+        #flower.bloomed .petal-g.p0 {
+            transform: rotate(0deg) scale(1);
+            transition-delay: 0s;
+        }
+        #flower.bloomed .petal-g.p1 {
+            transform: rotate(60deg) scale(1);
+            transition-delay: 0.08s;
+        }
+        #flower.bloomed .petal-g.p2 {
+            transform: rotate(120deg) scale(1);
+            transition-delay: 0.16s;
+        }
+        #flower.bloomed .petal-g.p3 {
+            transform: rotate(180deg) scale(1);
+            transition-delay: 0.24s;
+        }
+        #flower.bloomed .petal-g.p4 {
+            transform: rotate(240deg) scale(1);
+            transition-delay: 0.32s;
+        }
+        #flower.bloomed .petal-g.p5 {
+            transform: rotate(300deg) scale(1);
+            transition-delay: 0.4s;
+        }
+        #bud {
+            transition: opacity 0.5s ease;
+        }
+        #flower.bloomed #bud {
+            opacity: 0;
+        }
+        #flower-center {
+            opacity: 0;
+            transition: opacity 0.6s ease 0.5s;
+        }
+        #flower.bloomed #flower-center {
+            opacity: 1;
+        }
+
+        .bloom-btn {
+            font-family: 'Karla', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--ink);
+            background: var(--cream);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s ease, opacity 0.4s ease;
+        }
+        .bloom-btn:hover {
+            transform: translateY(-2px);
+        }
+        .bloom-btn:focus-visible {
+            outline: 3px solid var(--storm-dark);
+            outline-offset: 3px;
+        }
+        .bloom-btn:disabled {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bloom-message {
+            margin-top: 1.8rem;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .bloom-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── video section ── */
+        .video-section h2 {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            margin-bottom: 0.5rem;
+        }
+        .video-wrapper {
+            max-width: 560px;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            margin-top: 1.2rem;
+            background: #1a1a2e;
+            position: relative;
+        }
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        .video-note {
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            max-width: 32ch;
+        }
+
+        /* ── forgiveness section ── */
+        .forgiveness-section h2 {
+            font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+            margin-bottom: 0.3rem;
+        }
+        .forgiveness-section .question-sub {
+            font-size: 1.05rem;
+            opacity: 0.8;
+            margin-bottom: 1.8rem;
+            max-width: 28ch;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 2.8rem;
+            border: none;
+            border-radius: 3rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Karla', sans-serif;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #d45b7a, #b84a66);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(212, 91, 122, 0.35);
+        }
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 30px rgba(212, 91, 122, 0.4);
+        }
+        .btn-yes:active {
+            transform: scale(0.96);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.7);
+            color: #5d4037;
+            border: 2px solid rgba(180, 130, 130, 0.4);
+            backdrop-filter: blur(4px);
+        }
+        .btn-no:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #b84a66;
+            transform: translateY(-3px);
+        }
+        .btn-no:active {
+            transform: scale(0.96);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            pointer-events: none;
+        }
+
+        /* ── response display ── */
+        .response-display {
+            margin-top: 2rem;
+            padding: 1.2rem 1.8rem;
+            border-radius: 1.8rem;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+            font-size: 1.05rem;
+            transition: all 0.4s ease;
+            max-width: 540px;
+            width: 100%;
+        }
+
+        .response-display .response-text {
+            font-weight: 600;
+            font-size: 1.15rem;
+        }
+
+        .response-display .response-text.yes {
+            color: #2e7d32;
+        }
+        .response-display .response-text.no {
+            color: #b71c1c;
+        }
+        .response-display .response-text.waiting {
+            color: #6d4c41;
+            opacity: 0.6;
+        }
+
+        .response-display .timestamp {
+            font-size: 0.75rem;
+            color: #8d6e63;
+            background: rgba(0, 0, 0, 0.04);
+            padding: 0.2rem 0.9rem;
+            border-radius: 1rem;
+        }
+
+        .celebration {
+            margin-top: 0.6rem;
+            font-size: 2.4rem;
+            letter-spacing: 6px;
+            animation: celebratePop 0.6s ease;
+        }
+
+        @keyframes celebratePop {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* reset */
+        .reset-area {
+            margin-top: 1rem;
+        }
+        .btn-reset {
+            background: none;
+            border: none;
+            color: rgba(51, 48, 58, 0.5);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 0.3rem 1.2rem;
+            border-radius: 2rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-family: 'Karla', sans-serif;
+        }
+        .btn-reset:hover {
+            color: var(--ink);
+            border-color: rgba(51, 48, 58, 0.15);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ── closing ── */
+        .closing p {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            max-width: 32ch;
+            margin-bottom: 0.6rem;
+        }
+        .closing .signature {
+            font-family: 'Caveat', cursive;
+            font-size: 2.4rem;
+            margin-top: 0.8rem;
+            color: var(--storm-dark);
+        }
+
+        /* ── responsive ── */
+        @media (max-width: 480px) {
+            section {
+                padding: 4rem 1.2rem;
+            }
+            .letter-card {
+                padding: 2rem 1.5rem;
+            }
+            .letter-card p {
+                font-size: 0.95rem;
+            }
+            .btn {
+                padding: 0.7rem 2rem;
+                font-size: 0.95rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 0.8rem;
+                width: 100%;
+                max-width: 320px;
+            }
+            .response-display {
+                font-size: 0.95rem;
+                padding: 1rem 1.2rem;
+            }
+            .list-item {
+                font-size: 0.88rem;
+                padding: 0.5rem 1rem;
+            }
+            .flower-stage {
+                width: 160px;
+                height: 160px;
+            }
+            .video-wrapper {
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 2.6rem;
+            }
+            .letter-card {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── particles ─── -->
+    <div class="bg-canvas" id="particles"></div>
+
+    <!-- ─── HERO ─── -->
+    <section class="hero">
+        <p class="eyebrow">Dear</p>
+        <h1>Meru</h1>
+        <p class="hero-line">I know I got this wrong — and I wanted to say so properly.</p>
+        <button class="scroll-cue" id="scrollCue" aria-label="Scroll to letter">&#8595; scroll</button>
+    </section>
+
+    <!-- ─── LETTER (updated) ─── -->
+    <section class="letter-section">
+        <div class="letter-card reveal">
+            <p>Meru,</p>
+            <p>I have been replaying everything in my head over and over, and the more I think about it, the more I realize how wrong I was. I am not writing this to make excuses or to justify what happened. I just want you to know that I truly understand how much I hurt you, and I am deeply sorry for the pain I caused.</p>
+            <p>You mean so much to me, and knowing that I was the reason you felt hurt is something that has been weighing heavily on my heart. You deserve kindness, understanding, and respect, and I know that my actions did not reflect the way I truly feel about you. For that, I am genuinely sorry.</p>
+            <p>I cannot change what has already happened, but I can acknowledge my mistakes, learn from them, and become a better person because of them. I never want to be someone who causes you pain, and I hate knowing that I did. You are incredibly important to me, and the last thing I ever wanted was to make you feel upset or unappreciated.</p>
+            <p>I do not expect this message to erase what happened or make everything okay right away. I understand that trust and healing take time, and I respect whatever you need. I only hope that, someday, you will be able to see that this apology comes from my heart. I want to do better, not just by saying these words but by showing it through my actions.</p>
+            <p>I am truly, deeply sorry, Meru. Thank you for reading this and for giving me the chance to say what has been on my mind.</p>
+            <p class="signature">Rohan</p>
+        </div>
+    </section>
+
+    <!-- ─── WHAT I'M SORRY FOR ─── -->
+    <section class="bloom-section" style="padding-top:4rem; padding-bottom:4rem; min-height:auto;">
+        <h2 class="reveal">What I'm sorry for</h2>
+        <div class="divider"></div>
+        <div class="list-grid reveal">
+            <div class="list-item"><span class="icon">💭</span> <span class="label">Not listening</span> when you needed me to</div>
+            <div class="list-item"><span class="icon">💔</span> <span class="label">Words I said</span> that I can't take back</div>
+            <div class="list-item"><span class="icon">🤍</span> <span class="label">Being careless</span> with your feelings</div>
+            <div class="list-item"><span class="icon">⏳</span> <span class="label">Not giving you</span> the time you deserve</div>
+            <div class="list-item"><span class="icon">🌟</span> <span class="label">Not being</span> the person you need me to be</div>
+        </div>
+    </section>
+
+    <!-- ─── BLOOM ─── -->
+    <section class="bloom-section" style="padding-top:2rem; padding-bottom:4rem; min-height:auto; background: linear-gradient(180deg, var(--coral), #dcb5a8);">
+        <h2 class="reveal">I hope we can grow past this</h2>
+        <div class="flower-stage reveal">
+            <svg id="flower" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="An illustrated flower that blooms when the button below is pressed">
+                <defs>
+                    <radialGradient id="petalGrad" cx="50%" cy="25%" r="85%">
+                        <stop offset="0%" stop-color="#f8cdd4"/>
+                        <stop offset="100%" stop-color="#e8909f"/>
+                    </radialGradient>
+                </defs>
+                <line x1="100" y1="100" x2="100" y2="195" stroke="#8fb996" stroke-width="5" stroke-linecap="round"/>
+                <path d="M100,150 Q78,138 66,155 Q84,162 100,150 Z" fill="#8fb996"/>
+                <path d="M100,165 Q122,155 132,170 Q116,178 100,165 Z" fill="#8fb996"/>
+                <g class="petal-g p0"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <g class="petal-g p1"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <g class="petal-g p2"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <g class="petal-g p3"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <g class="petal-g p4"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <g class="petal-g p5"><ellipse cx="100" cy="68" rx="17" ry="33" fill="url(#petalGrad)"/></g>
+                <ellipse id="bud" cx="100" cy="88" rx="11" ry="20" fill="#e0899a"/>
+                <circle id="flower-center" cx="100" cy="100" r="15" fill="#ffd166"/>
+            </svg>
+        </div>
+        <button class="bloom-btn" id="bloomBtn">Let it bloom</button>
+        <p class="bloom-message" id="bloomMsg">Thank you for giving this a chance to grow. 🌱</p>
+    </section>
+
+    <!-- ─── VIDEO APOLOGY ─── -->
+    <section class="video-section" id="video">
+        <h2 class="reveal">A message from my heart</h2>
+        <p class="section-sub reveal">I made this for you, Meru.</p>
+        <div class="video-wrapper reveal">
+            <!-- Replace the src with your own YouTube embed URL -->
+            <iframe src="https://www.youtube.com/embed/PLACEHOLDER" 
+                    title="My apology video" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+        <p class="video-note reveal">(Replace the video ID above with your own YouTube link)</p>
+    </section>
+
+    <!-- ─── FORGIVENESS TRACKER ─── -->
+    <section class="forgiveness-section" id="forgiveness">
+        <h2 class="reveal">Meru, did you forgive me?</h2>
+        <p class="question-sub reveal">Your honest answer means the world to me.</p>
+
+        <div class="btn-group reveal">
+            <button class="btn btn-yes" id="btnYes">💖 Yes, I forgive you</button>
+            <button class="btn btn-no" id="btnNo">💔 Not yet…</button>
+        </div>
+
+        <div class="response-display reveal" id="responseDisplay">
+            <span class="response-text waiting" id="responseText">⏳ waiting for your answer…</span>
+        </div>
+
+        <div class="reset-area reveal">
+            <button class="btn-reset" id="btnReset">🔄 clear response</button>
+        </div>
+    </section>
+
+    <!-- ─── CLOSING ─── -->
+    <section class="closing">
+        <p class="reveal">Thank you for reading this far.</p>
+        <p class="reveal">I hope we can talk soon.</p>
+        <p class="signature reveal">with love, Rohan</p>
+    </section>
+
+    <script>
+        // ─── ambient particles ───
+        (function initParticles() {
+            var container = document.getElementById('particles');
+            for (var i = 0; i < 26; i++) {
+                var p = document.createElement('div');
+                p.className = 'particle';
+                var size = 4 + Math.random() * 6;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = (Math.random() * 100) + 'vw';
+                p.style.animationDuration = (14 + Math.random() * 14) + 's';
+                p.style.animationDelay = (Math.random() * 14) + 's';
+                container.appendChild(p);
+            }
+        })();
+
+        // ─── scroll reveals ───
+        (function initReveals() {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+        })();
+
+        // ─── scroll cue ───
+        document.getElementById('scrollCue').addEventListener('click', function() {
+            document.querySelector('.letter-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // ─── bloom ───
+        (function initBloom() {
+            var btn = document.getElementById('bloomBtn');
+            var flower = document.getElementById('flower');
+            var msg = document.getElementById('bloomMsg');
+            btn.addEventListener('click', function() {
+                flower.classList.add('bloomed');
+                btn.disabled = true;
+                setTimeout(function() { msg.classList.add('visible'); }, 700);
+            });
+        })();
+
+        // ─── FORGIVENESS TRACKER (localStorage) ───
+        (function initForgiveness() {
+            var STORAGE_KEY = 'meru_forgiveness_response';
+
+            var btnYes = document.getElementById('btnYes');
+            var btnNo = document.getElementById('btnNo');
+            var responseDisplay = document.getElementById('responseDisplay');
+            var responseText = document.getElementById('responseText');
+            var btnReset = document.getElementById('btnReset');
+
+            function getStored() {
+                try {
+                    var raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return null;
+                    return JSON.parse(raw);
+                } catch (_) { return null; }
+            }
+
+            function setStored(value) {
+                var payload = {
+                    answer: value,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+            }
+
+            function clearStored() {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+
+            function formatTime(iso) {
+                if (!iso) return '';
+                try {
+                    var d = new Date(iso);
+                    return d.toLocaleString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } catch (_) { return ''; }
+            }
+
+            function renderResponse() {
+                var stored = getStored();
+
+                // remove old celebration & extra timestamp
+                var oldCeleb = responseDisplay.querySelector('.celebration');
+                if (oldCeleb) oldCeleb.remove();
+                var oldTs = responseDisplay.querySelector('.timestamp');
+                if (oldTs) oldTs.remove();
+
+                if (!stored) {
+                    responseText.textContent = '⏳ waiting for your answer…';
+                    responseText.className = 'response-text waiting';
+                    btnYes.disabled = false;
+                    btnNo.disabled = false;
+                    return;
+                }
+
+                var answer = stored.answer;
+                var timestamp = stored.timestamp;
+                var isYes = answer === 'yes';
+                var isNo = answer === 'no';
+
+                if (isYes) {
+                    responseText.textContent = '💖 Yes — you forgave me! Thank you, Meru!';
+                    responseText.className = 'response-text yes';
+                } else if (isNo) {
+                    responseText.textContent = '💔 Not yet… I understand. I\'ll keep trying.';
+                    responseText.className = 'response-text no';
+                } else {
+                    responseText.textContent = '⚠️ unknown response';
+                    responseText.className = 'response-text waiting';
+                }
+
+                // timestamp
+                var tsEl = document.createElement('span');
+                tsEl.className = 'timestamp';
+                tsEl.textContent = timestamp ? '· ' + formatTime(timestamp) : '';
+                responseDisplay.appendChild(tsEl);
+
+                // celebration for yes
+                if (isYes) {
+                    var celeb = document.createElement('div');
+                    celeb.className = 'celebration';
+                    celeb.textContent = '❤️‍🔥🥰❤️‍🔥';
+                    responseDisplay.appendChild(celeb);
+                }
+
+                btnYes.disabled = true;
+                btnNo.disabled = true;
+            }
+
+            function handleAnswer(answer) {
+                if (btnYes.disabled && btnNo.disabled) return;
+                setStored(answer);
+                renderResponse();
+            }
+
+            function handleReset() {
+                if (confirm('Clear Meru\'s response? This will reset the forgiveness status.')) {
+                    clearStored();
+                    renderResponse();
+                }
+            }
+
+            btnYes.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleAnswer('yes');
+            });
+
+            btnNo.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleAnswer('no');
+            });
+
+            btnReset.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleReset();
+            });
+
+            // initial render
+            renderResponse();
+        })();
+    </script>
+
+</body>
+</html>
